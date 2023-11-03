@@ -116,16 +116,15 @@ function generate(action) {
                 }
             }
 
-            if (barcodeType === 'qrcode' && isRandom) {
-                value = 'Dynamsoft-' + value;
-            }
-
             const x = col * (rectWidth + spacing);
             const y = row * (rectHeight + spacing);
 
             try {
                 if (barcodeType === 'maxicode' || barcodeType === 'qrcode' || barcodeType === 'pdf417' || barcodeType === 'azteccode' || barcodeType === 'datamatrix') {
                     is2D = true;
+                    if (isRandom) {
+                        value = 'Dynamsoft-' + value;
+                    }
                     try {
                         bwipjs.toCanvas(tempCanvas, {
                             bcid: barcodeType,
@@ -198,8 +197,6 @@ function generate(action) {
                 // Draw barcode
                 ctx.drawImage(tempCanvas, x + 5, y + 5);
 
-                // Draw text below barcode
-                // ctx.fillText(value, x + 45, y + 140);
             } catch (error) {
                 alert(error);
                 needStop = true;
