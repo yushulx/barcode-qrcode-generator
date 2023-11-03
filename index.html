@@ -42,9 +42,13 @@
             <option value="pharmacode">Pharmacode</option>
             <option value="codabar">Codabar</option>
         </select>
-        <button onclick="generate('direct')">Generate Barcodes</button>
-        <button onclick="generate('random')">Randomize Barcodes</button>
-        <button onclick="generate('mixed')">Barcodes by Random Types</button>
+        <button class="generate" onclick="generate('direct')">Generate Barcodes</button>
+
+    </div class="row">
+
+    <div class="row">
+        <button class="random" onclick="generate('random')">Barcodes by Random Values</button>
+        <button class="random" onclick="generate('mixed')">Barcodes by Random Types</button>
     </div class="row">
 
     <div id="barcodes" class="row">

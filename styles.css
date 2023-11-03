@@ -2,10 +2,19 @@
     margin-bottom: 20px;
 }
 
-button {
+.generate {
     padding: 10px 15px;
     border: none;
     background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.random {
+    padding: 10px 15px;
+    border: none;
+    background-color: #ff8000;
     color: #fff;
     cursor: pointer;
     border-radius: 5px;
