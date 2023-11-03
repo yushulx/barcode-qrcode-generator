@@ -18,17 +18,15 @@ function drawRoundedRect(ctx, x, y, width, height, radius) {
     ctx.stroke();
 }
 
-function generateBarcodes() {
+function generate(action) {
     const rows = document.getElementById('rows').value;
     const cols = document.getElementById('cols').value;
     const text = document.getElementById('text').value;
     const barcodeType = document.getElementById('barcodeType').value;
     const canvas = document.getElementById('barcodeCanvas');
 
-    const barcodeWidth = 100;
-    const barcodeHeight = 120;
-    const rectWidth = 260;
-    const rectHeight = 150;
+    const rectWidth = barcodeType === 'qrcode' ? 200 : 220;
+    const rectHeight = barcodeType === 'qrcode' ? 200 : 150;
     const radius = 10;
     const spacing = 10;
     canvas.width = cols * (rectWidth + spacing);
@@ -37,11 +35,37 @@ function generateBarcodes() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = '14px Arial';
 
+    let isRandom = false;
+    let needStop = false;
+    if (action === 'direct') {
+        isRandom = false;
+    } else if (action === 'random') {
+        isRandom = true;
+    }
+
     for (let row = 0; row < rows; row++) {
+        if (needStop) {
+            break;
+        }
         for (let col = 0; col < cols; col++) {
             const tempCanvas = document.createElement('canvas');
-            const value = (text === "" ? randomEAN13Number() : text);
-            // const value = barcodeType === 'qrcode' ? 'QRData-' + (row * cols + col) : content;
+            let value = '';
+
+            if (isRandom) {
+                value = randomEAN13Number();
+            }
+            else {
+                value = text;
+                if (value === '') {
+                    alert('Please input barcode text!');
+                    needStop = true;
+                    break;
+                }
+            }
+
+            if (barcodeType === 'qrcode' && isRandom) {
+                value = 'Dynamsoft-' + value;
+            }
 
             const x = col * (rectWidth + spacing);
             const y = row * (rectHeight + spacing);
@@ -62,7 +86,8 @@ function generateBarcodes() {
                     const img = new Image();
                     img.src = imgTag.split('\"')[1];
                     img.onload = function () {
-                        ctx.drawImage(img, x + 5, y + 5);
+                        ctx.drawImage(img, x, y);
+                        ctx.fillText(value, x + 15, y + img.height + 20);
                     };
 
                     continue;
@@ -79,6 +104,8 @@ function generateBarcodes() {
                 ctx.fillText(value, x + 45, y + 140);
             } catch (error) {
                 alert(error);
+                needStop = true;
+                break;
             }
         }
     }

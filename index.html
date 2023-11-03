@@ -33,12 +33,12 @@
             <option value="qrcode">QR Code</option>
             <!-- Add more types here as needed -->
         </select>
-        <button onclick="generateBarcodes()">Generate Barcodes</button>
+        <button onclick="generate('direct')">Generate Barcodes</button>
+        <button onclick="generate('random')">Randomize Barcodes</button>
     </div class="row">
 
     <div id="barcodes" class="row">
         <canvas id="barcodeCanvas"></canvas>
-        <!-- Size will be determined by JavaScript based on the rows x columns -->
     </div>
 
 </body>
