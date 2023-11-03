@@ -21,6 +21,7 @@ function drawRoundedRect(ctx, x, y, width, height, radius) {
 function generateBarcodes() {
     const rows = document.getElementById('rows').value;
     const cols = document.getElementById('cols').value;
+    const text = document.getElementById('text').value;
     const barcodeType = document.getElementById('barcodeType').value;
     const canvas = document.getElementById('barcodeCanvas');
 
@@ -39,41 +40,46 @@ function generateBarcodes() {
     for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
             const tempCanvas = document.createElement('canvas');
-            const value = barcodeType === 'qrcode' ? 'QRData-' + (row * cols + col) : randomEAN13Number();
+            const value = (text === "" ? randomEAN13Number() : text);
+            // const value = barcodeType === 'qrcode' ? 'QRData-' + (row * cols + col) : content;
 
             const x = col * (rectWidth + spacing);
             const y = row * (rectHeight + spacing);
 
-            if (barcodeType === 'ean13') {
-                JsBarcode(tempCanvas, value, {
-                    format: "ean13",
-                    width: 2,
-                    height: 100,
-                    displayValue: false
-                });
-            } else if (barcodeType === 'qrcode') {
-                const qr = qrcode(4, 'L');
-                qr.addData(value);
-                qr.make();
-                const imgTag = qr.createImgTag(4);
-                const img = new Image();
-                img.src = imgTag.split('\"')[1];
-                img.onload = function () {
-                    ctx.drawImage(img, x + 5, y + 5);
-                };
+            try {
+                if (barcodeType === 'ean13') {
+                    JsBarcode(tempCanvas, value, {
+                        format: "ean13",
+                        width: 2,
+                        height: 100,
+                        displayValue: false
+                    });
+                } else if (barcodeType === 'qrcode') {
+                    const qr = qrcode(4, 'L');
+                    qr.addData(value);
+                    qr.make();
+                    const imgTag = qr.createImgTag(4);
+                    const img = new Image();
+                    img.src = imgTag.split('\"')[1];
+                    img.onload = function () {
+                        ctx.drawImage(img, x + 5, y + 5);
+                    };
 
-                continue;
+                    continue;
+                }
+
+                // Draw rounded rect
+                ctx.strokeStyle = '#000';
+                drawRoundedRect(ctx, x, y, rectWidth, rectHeight, radius);
+
+                // Draw barcode
+                ctx.drawImage(tempCanvas, x + 5, y + 5);
+
+                // Draw text below barcode
+                ctx.fillText(value, x + 45, y + 140);
+            } catch (error) {
+                alert(error);
             }
-
-            // Draw rounded rect
-            ctx.strokeStyle = '#000';
-            drawRoundedRect(ctx, x, y, rectWidth, rectHeight, radius);
-
-            // Draw barcode
-            ctx.drawImage(tempCanvas, x + 5, y + 5);
-
-            // Draw text below barcode
-            ctx.fillText(value, x + 45, y + 140);
         }
     }
 }

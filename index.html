@@ -4,32 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.js"></script>
+    <script src="app.js"></script>
     <title>Generate Custom Sized Barcode Grid</title>
 </head>
 
 <body>
-    <label for="rows">Rows:</label>
-    <input type="number" id="rows" min="1" value="1">
+    <h1>Barcode QR Code Generator</h1>
+    <div class="row">
+        <label for="rows">Rows:</label>
+        <input type="number" id="rows" min="1" value="1">
 
-    <label for="cols">Columns:</label>
-    <input type="number" id="cols" min="1" value="1">
-
-    <label for="barcodeType">Barcode Type:</label>
-    <select id="barcodeType">
-        <option value="ean13">EAN13</option>
-        <option value="qrcode">QR Code</option>
-        <!-- Add more types here as needed -->
-    </select>
-
-    <button onclick="generateBarcodes()">Generate Barcodes</button>
-
-    <div id="barcodes">
-        <canvas id="barcodeCanvas"></canvas> <!-- Size will be determined by JavaScript based on the rows x columns -->
+        <label for="cols">Columns:</label>
+        <input type="number" id="cols" min="1" value="1">
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.js"></script>
-    <script src="app.js"></script>
+    <div class="row">
+        <label for="cols">Text:</label>
+        <input type="text" id="text" placeholder="Empty for random generation">
+    </div>
+
+    <div class="row">
+        <label for="barcodeType">Barcode Type:</label>
+        <select id="barcodeType">
+            <option value="ean13">EAN13</option>
+            <option value="qrcode">QR Code</option>
+            <!-- Add more types here as needed -->
+        </select>
+        <button onclick="generateBarcodes()">Generate Barcodes</button>
+    </div class="row">
+
+    <div id="barcodes" class="row">
+        <canvas id="barcodeCanvas"></canvas>
+        <!-- Size will be determined by JavaScript based on the rows x columns -->
+    </div>
+
 </body>
 
 </html>
