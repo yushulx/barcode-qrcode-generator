@@ -31,7 +31,20 @@ function generate(action) {
 
     let rectWidth = 200;
     let rectHeight = 200;
-    if (barcodeType === 'pdf417') {
+
+    if (barcodeType === 'datamatrix') {
+        rectWidth = 200;
+        rectHeight = 200;
+    }
+    else if (barcodeType === 'azteccode') {
+        rectWidth = 200;
+        rectHeight = 200;
+    }
+    else if (barcodeType === 'maxicode') {
+        rectWidth = 400;
+        rectHeight = 400;
+    }
+    else if (barcodeType === 'pdf417') {
         rectWidth = 430;
         rectHeight = 150;
     }
@@ -111,33 +124,11 @@ function generate(action) {
             const y = row * (rectHeight + spacing);
 
             try {
-                if (barcodeType === 'pdf417') {
+                if (barcodeType === 'maxicode' || barcodeType === 'qrcode' || barcodeType === 'pdf417' || barcodeType === 'azteccode' || barcodeType === 'datamatrix') {
                     is2D = true;
                     try {
                         bwipjs.toCanvas(tempCanvas, {
-                            bcid: 'pdf417',
-                            text: value,
-                            scale: 4,
-                            includetext: true,
-                            textxalign: 'center',
-                        });
-                    } catch (e) {
-                        console.log(e);
-                    }
-                    ctx.fillText(value, x + 110, y + 140);
-                }
-                else if (barcodeType === 'ean13') {
-                    JsBarcode(tempCanvas, value, {
-                        format: "ean13",
-                        width: 2,
-                        height: 100,
-                        displayValue: true
-                    });
-                } else if (barcodeType === 'qrcode') {
-                    is2D = true;
-                    try {
-                        bwipjs.toCanvas(tempCanvas, {
-                            bcid: 'qrcode',
+                            bcid: barcodeType,
                             text: value,
                             scale: 3,
                             includetext: true,
@@ -147,7 +138,13 @@ function generate(action) {
                         console.log(e);
                     }
                     ctx.fillText(value, x + 5, y + tempCanvas.height + 30);
-                    // continue;
+                } else if (barcodeType === 'ean13') {
+                    JsBarcode(tempCanvas, value, {
+                        format: "ean13",
+                        width: 2,
+                        height: 100,
+                        displayValue: true
+                    });
                 } else if (barcodeType === 'code128') {
                     JsBarcode(tempCanvas, value, {
                         format: "CODE128",
