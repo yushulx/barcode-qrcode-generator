@@ -31,7 +31,11 @@ function generate(action) {
 
     let rectWidth = 200;
     let rectHeight = 200;
-    if (barcodeType === 'ean13') {
+    if (barcodeType === 'pdf417') {
+        rectWidth = 430;
+        rectHeight = 150;
+    }
+    else if (barcodeType === 'ean13') {
         rectWidth = 250;
         rectHeight = 150;
     } else if (barcodeType === 'qrcode') {
@@ -50,7 +54,7 @@ function generate(action) {
         rectWidth = 330;
         rectHeight = 150;
     } else if (barcodeType === 'pharmacode') {
-        rectWidth = 160;
+        rectWidth = 170;
         rectHeight = 150;
     } else if (barcodeType === 'codabar') {
         rectWidth = 320;
@@ -67,6 +71,7 @@ function generate(action) {
 
     let isRandom = false;
     let needStop = false;
+    let is2D = false;
     if (action === 'direct') {
         isRandom = false;
     } else if (action === 'random') {
@@ -78,7 +83,7 @@ function generate(action) {
             break;
         }
         for (let col = 0; col < cols; col++) {
-            const tempCanvas = document.createElement('canvas');
+            let tempCanvas = document.createElement('canvas');
             let value = '';
 
             if (isRandom) {
@@ -106,7 +111,22 @@ function generate(action) {
             const y = row * (rectHeight + spacing);
 
             try {
-                if (barcodeType === 'ean13') {
+                if (barcodeType === 'pdf417') {
+                    is2D = true;
+                    try {
+                        bwipjs.toCanvas(tempCanvas, {
+                            bcid: 'pdf417',
+                            text: value,
+                            scale: 4,
+                            includetext: true,
+                            textxalign: 'center',
+                        });
+                    } catch (e) {
+                        console.log(e);
+                    }
+                    ctx.fillText(value, x + 110, y + 140);
+                }
+                else if (barcodeType === 'ean13') {
                     JsBarcode(tempCanvas, value, {
                         format: "ean13",
                         width: 2,
@@ -114,18 +134,20 @@ function generate(action) {
                         displayValue: true
                     });
                 } else if (barcodeType === 'qrcode') {
-                    const qr = qrcode(4, 'L');
-                    qr.addData(value);
-                    qr.make();
-                    const imgTag = qr.createImgTag(4);
-                    const img = new Image();
-                    img.src = imgTag.split('\"')[1];
-                    img.onload = function () {
-                        ctx.drawImage(img, x, y);
-                        ctx.fillText(value, x + 15, y + img.height + 20);
-                    };
-
-                    continue;
+                    is2D = true;
+                    try {
+                        bwipjs.toCanvas(tempCanvas, {
+                            bcid: 'qrcode',
+                            text: value,
+                            scale: 3,
+                            includetext: true,
+                            textxalign: 'center',
+                        });
+                    } catch (e) {
+                        console.log(e);
+                    }
+                    ctx.fillText(value, x + 5, y + tempCanvas.height + 30);
+                    // continue;
                 } else if (barcodeType === 'code128') {
                     JsBarcode(tempCanvas, value, {
                         format: "CODE128",
@@ -171,8 +193,10 @@ function generate(action) {
                 }
 
                 // Draw rounded rect
-                ctx.strokeStyle = '#000';
-                drawRoundedRect(ctx, x, y, rectWidth, rectHeight, radius);
+                if (!is2D) {
+                    ctx.strokeStyle = '#000';
+                    drawRoundedRect(ctx, x, y, rectWidth, rectHeight, radius);
+                }
 
                 // Draw barcode
                 ctx.drawImage(tempCanvas, x + 5, y + 5);

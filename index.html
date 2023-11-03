@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bwip-js@4.1.2"></script>
     <script src="app.js"></script>
     <title>Generate Custom Sized Barcode Grid</title>
 </head>
@@ -29,8 +29,9 @@
     <div class="row">
         <label for="barcodeType">Barcode Type:</label>
         <select id="barcodeType">
-            <option value="ean13">EAN13</option>
             <option value="qrcode">QR Code</option>
+            <option value="pdf417">PDF417</option>
+            <option value="ean13">EAN13</option>
             <option value="code128">CODE128</option>
             <option value="code39">CODE39</option>
             <option value="itf">ITF</option>
