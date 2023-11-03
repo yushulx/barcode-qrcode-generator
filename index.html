@@ -31,7 +31,12 @@
         <select id="barcodeType">
             <option value="ean13">EAN13</option>
             <option value="qrcode">QR Code</option>
-            <!-- Add more types here as needed -->
+            <option value="code128">CODE128</option>
+            <option value="code39">CODE39</option>
+            <option value="itf">ITF</option>
+            <option value="msi">MSI</option>
+            <option value="pharmacode">Pharmacode</option>
+            <option value="codabar">Codabar</option>
         </select>
         <button onclick="generate('direct')">Generate Barcodes</button>
         <button onclick="generate('random')">Randomize Barcodes</button>
