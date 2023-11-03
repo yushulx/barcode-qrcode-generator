@@ -1,3 +1,9 @@
+const alltypes = ["qrcode", "datamatrix", "pdf417", "azteccode", "maxicode", "ean13", "code128", "code39", "itf", "msi", "pharmacode", "codabar"];
+
+function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 function randomEAN13Number() {
     // Generate 12 random digits
     let value = '';
@@ -23,72 +29,77 @@ function randomPharmacodeNumber() {
 }
 
 function generate(action) {
-    const rows = document.getElementById('rows').value;
-    const cols = document.getElementById('cols').value;
     const text = document.getElementById('text').value;
-    const barcodeType = document.getElementById('barcodeType').value;
     const canvas = document.getElementById('barcodeCanvas');
+    let barcodeType = document.getElementById('barcodeType').value;
+    let rows = document.getElementById('rows').value;
+    let cols = document.getElementById('cols').value;
+    let rectWidth = 480;
+    let rectHeight = 350;
 
-    let rectWidth = 200;
-    let rectHeight = 200;
-
-    if (barcodeType === 'datamatrix') {
-        rectWidth = 200;
-        rectHeight = 200;
+    if (action !== 'mixed') {
+        if (barcodeType === 'datamatrix') {
+            rectWidth = 200;
+            rectHeight = 200;
+        }
+        else if (barcodeType === 'azteccode') {
+            rectWidth = 200;
+            rectHeight = 200;
+        }
+        else if (barcodeType === 'maxicode') {
+            rectWidth = 400;
+            rectHeight = 350;
+        }
+        else if (barcodeType === 'pdf417') {
+            rectWidth = 400;
+            rectHeight = 150;
+        }
+        else if (barcodeType === 'ean13') {
+            rectWidth = 250;
+            rectHeight = 150;
+        } else if (barcodeType === 'qrcode') {
+            rectWidth = 200;
+            rectHeight = 200;
+        } else if (barcodeType === 'code128') {
+            rectWidth = 250;
+            rectHeight = 150;
+        } else if (barcodeType === 'code39') {
+            rectWidth = 480;
+            rectHeight = 150;
+        } else if (barcodeType === 'itf') {
+            rectWidth = 270;
+            rectHeight = 150;
+        } else if (barcodeType === 'msi') {
+            rectWidth = 330;
+            rectHeight = 150;
+        } else if (barcodeType === 'pharmacode') {
+            rectWidth = 170;
+            rectHeight = 150;
+        } else if (barcodeType === 'codabar') {
+            rectWidth = 320;
+            rectHeight = 150;
+        }
     }
-    else if (barcodeType === 'azteccode') {
-        rectWidth = 200;
-        rectHeight = 200;
-    }
-    else if (barcodeType === 'maxicode') {
-        rectWidth = 400;
-        rectHeight = 400;
-    }
-    else if (barcodeType === 'pdf417') {
-        rectWidth = 430;
-        rectHeight = 150;
-    }
-    else if (barcodeType === 'ean13') {
-        rectWidth = 250;
-        rectHeight = 150;
-    } else if (barcodeType === 'qrcode') {
-        rectWidth = 200;
-        rectHeight = 200;
-    } else if (barcodeType === 'code128') {
-        rectWidth = 250;
-        rectHeight = 150;
-    } else if (barcodeType === 'code39') {
+    else {
         rectWidth = 480;
-        rectHeight = 150;
-    } else if (barcodeType === 'itf') {
-        rectWidth = 270;
-        rectHeight = 150;
-    } else if (barcodeType === 'msi') {
-        rectWidth = 330;
-        rectHeight = 150;
-    } else if (barcodeType === 'pharmacode') {
-        rectWidth = 170;
-        rectHeight = 150;
-    } else if (barcodeType === 'codabar') {
-        rectWidth = 320;
-        rectHeight = 150;
+        rectHeight = 350;
     }
 
     const radius = 10;
     const spacing = 10;
-    canvas.width = cols * (rectWidth + spacing);
-    canvas.height = rows * (rectHeight + spacing);
+    const gridWidth = rectWidth;
+    const gridHeight = rectHeight;
+    canvas.width = cols * (gridWidth + spacing);
+    canvas.height = rows * (gridHeight + spacing);
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = '14px Arial';
 
-    let isRandom = false;
+    let isRandom = true;
     let needStop = false;
-    let is2D = false;
+
     if (action === 'direct') {
         isRandom = false;
-    } else if (action === 'random') {
-        isRandom = true;
     }
 
     for (let row = 0; row < rows; row++) {
@@ -96,8 +107,13 @@ function generate(action) {
             break;
         }
         for (let col = 0; col < cols; col++) {
+            let is2D = false;
             let tempCanvas = document.createElement('canvas');
             let value = '';
+
+            if (action === 'mixed') {
+                barcodeType = alltypes[randomInt(0, alltypes.length - 1)];
+            }
 
             if (isRandom) {
                 if (barcodeType === 'pharmacode') {
@@ -116,8 +132,8 @@ function generate(action) {
                 }
             }
 
-            const x = col * (rectWidth + spacing);
-            const y = row * (rectHeight + spacing);
+            const x = col * (gridWidth + spacing);
+            const y = row * (gridHeight + spacing);
 
             try {
                 if (barcodeType === 'maxicode' || barcodeType === 'qrcode' || barcodeType === 'pdf417' || barcodeType === 'azteccode' || barcodeType === 'datamatrix') {
@@ -189,7 +205,7 @@ function generate(action) {
                 }
 
                 // Draw rounded rect
-                if (!is2D) {
+                if (!is2D && action !== 'mixed') {
                     ctx.strokeStyle = '#000';
                     drawRoundedRect(ctx, x, y, rectWidth, rectHeight, radius);
                 }
