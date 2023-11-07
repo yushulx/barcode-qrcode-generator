@@ -93,7 +93,10 @@ function generate(action) {
     canvas.height = rows * (gridHeight + spacing);
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.font = '14px Arial';
+    ctx.fillStyle = 'black';
 
     let isRandom = true;
     let needStop = false;
