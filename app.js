@@ -1,4 +1,4 @@
-const alltypes = ["qrcode", "datamatrix", "pdf417", "azteccode", "maxicode", "ean13", "code128", "code39", "interleaved2of5", "msi", "pharmacode", "rationalizedCodabar"];
+const alltypes = ["dotcode", "qrcode", "datamatrix", "pdf417", "azteccode", "maxicode", "ean13", "code128", "code39", "interleaved2of5", "msi", "pharmacode", "rationalizedCodabar"];
 
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -94,7 +94,7 @@ function generate(action) {
             }
 
             try {
-                if (barcodeType === 'maxicode' || barcodeType === 'qrcode' || barcodeType === 'pdf417' || barcodeType === 'azteccode' || barcodeType === 'datamatrix') {
+                if (barcodeType === 'dotcode' || barcodeType === 'maxicode' || barcodeType === 'qrcode' || barcodeType === 'pdf417' || barcodeType === 'azteccode' || barcodeType === 'datamatrix') {
                     is2D = true;
                     if (isRandom) {
                         value = 'Dynamsoft-' + value;
