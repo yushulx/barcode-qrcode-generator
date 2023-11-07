@@ -1,4 +1,4 @@
-const alltypes = ["qrcode", "datamatrix", "pdf417", "azteccode", "maxicode", "ean13", "code128", "code39", "itf", "msi", "pharmacode", "codabar"];
+const alltypes = ["qrcode", "datamatrix", "pdf417", "azteccode", "maxicode", "ean13", "code128", "code39", "interleaved2of5", "msi", "pharmacode", "rationalizedCodabar"];
 
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -27,6 +27,23 @@ function drawRoundedRect(ctx, x, y, width, height, radius) {
 function randomPharmacodeNumber() {
     return Math.floor(Math.random() * (131070 - 3 + 1)) + 3;
 }
+
+function randomCodabar() {
+    const chars = '0123456789-$:/.+';
+    const startStopChars = 'ABCD';
+
+    const startChar = startStopChars[Math.floor(Math.random() * startStopChars.length)];
+    const stopChar = startStopChars[Math.floor(Math.random() * startStopChars.length)];
+    const middleLength = Math.floor(Math.random() * (16 - 4 + 1)) + 4;
+
+    let middlePart = '';
+    for (let i = 0; i < middleLength; i++) {
+        middlePart += chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    return startChar + middlePart + stopChar;
+}
+
 
 function generate(action) {
     const text = document.getElementById('text').value;
@@ -58,7 +75,10 @@ function generate(action) {
 
             if (isRandom) {
                 if (barcodeType === 'pharmacode') {
-                    value = randomPharmacodeNumber();
+                    value = randomPharmacodeNumber() + '';
+                }
+                else if (barcodeType === 'rationalizedCodabar') {
+                    value = randomCodabar();
                 }
                 else {
                     value = randomEAN13Number();
@@ -79,25 +99,22 @@ function generate(action) {
                     if (isRandom) {
                         value = 'Dynamsoft-' + value;
                     }
-                    try {
-                        bwipjs.toCanvas(tempCanvas, {
-                            bcid: barcodeType,
-                            text: value,
-                            scale: 3,
-                            includetext: true,
-                            textxalign: 'center',
-                        });
-                    } catch (e) {
-                        console.log(e);
-                    }
-                } else {
-                    JsBarcode(tempCanvas, value, {
-                        format: barcodeType,
-                        width: 2,
-                        height: 100,
-                        displayValue: true
+                }
+
+                try {
+                    bwipjs.toCanvas(tempCanvas, {
+                        bcid: barcodeType,
+                        text: value,
+                        scale: 3,
+                        includetext: true,
+                        textxalign: 'center',
                     });
-                } 
+                } catch (e) {
+                    console.log(e);
+                    alert(e);
+                    needStop = true;
+                    break;
+                }
 
                 if (tempCanvas.width >= maxWidth) {
                     maxWidth = tempCanvas.width;
