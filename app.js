@@ -174,3 +174,6 @@ function generate(action) {
     }
 }
 
+window.onload = function () {
+    generate('random');
+}
