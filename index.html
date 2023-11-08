@@ -16,9 +16,9 @@
 
     <div class="row">
         <label for="cols">Text:</label>
-        <input type="text" id="text" placeholder="">
+        <input type="text" id="text" placeholder="" value="123456789012">
         <label for="barcodeType">Barcode Type:</label>
-        <select id="barcodeType">
+        <select id="barcodeType" onchange="selectChange()">
             <option value="qrcode">QR Code</option>
             <option value="dotcode">Dotcode</option>
             <option value="pdf417">PDF417</option>

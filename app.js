@@ -107,7 +107,7 @@ function generate(action) {
                         text: value,
                         scale: 3,
                         includetext: true,
-                        textxalign: 'center',
+                        // textxalign: 'center',
                     });
                 } catch (e) {
                     console.log(e);
@@ -175,5 +175,21 @@ function generate(action) {
 }
 
 window.onload = function () {
-    generate('random');
+    generate('direct');
+}
+
+function selectChange() {
+    const barcodeType = document.getElementById('barcodeType').value;
+    const text = document.getElementById('text');
+    if (barcodeType === 'pharmacode') {
+        text.value = '12345';
+    }
+    else if (barcodeType === 'rationalizedCodabar') {
+        text.value = 'A1234567890B';
+    }
+    else {
+        text.value = '123456789012';
+    }
+
+    generate('direct');
 }
