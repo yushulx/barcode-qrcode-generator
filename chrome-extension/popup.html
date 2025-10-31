@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="popup.css">
+    <title>Barcode Generator</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Barcode Generator</h1>
+
+        <div class="input-section">
+            <div class="button-group">
+                <button id="useUrl" class="btn btn-primary">Use Current URL</button>
+                <button id="useManual" class="btn btn-secondary">Manual Input</button>
+            </div>
+
+            <div class="input-group">
+                <label for="text">Text:</label>
+                <input type="text" id="text" placeholder="Enter text or click 'Use Current URL'">
+            </div>
+
+            <div class="input-group">
+                <label for="barcodeType">Barcode Type:</label>
+                <select id="barcodeType">
+                    <option value="qrcode">QR Code</option>
+                    <option value="dotcode">Dotcode</option>
+                    <option value="pdf417">PDF417</option>
+                    <option value="maxicode">MaxiCode</option>
+                    <option value="azteccode">AztecCode</option>
+                    <option value="datamatrix">DataMatrix</option>
+                    <option value="ean13">EAN13</option>
+                    <option value="code128">CODE128</option>
+                    <option value="code39">CODE39</option>
+                    <option value="interleaved2of5">ITF</option>
+                    <option value="msi">MSI</option>
+                    <option value="pharmacode">Pharmacode</option>
+                    <option value="rationalizedCodabar">Codabar</option>
+                </select>
+            </div>
+
+            <button id="generate" class="btn btn-generate">Generate Barcode</button>
+        </div>
+
+        <div id="result" class="result-section" style="display: none;">
+            <canvas id="barcodeCanvas"></canvas>
+            <div class="action-buttons">
+                <button id="download" class="btn btn-success">Download</button>
+                <button id="copy" class="btn btn-info">Copy to Clipboard</button>
+            </div>
+        </div>
+
+        <div id="error" class="error-message" style="display: none;"></div>
+    </div>
+
+    <script src="bwip-js.min.js"></script>
+    <script src="popup.js"></script>
+</body>
+
+</html>
