@@ -26,11 +26,14 @@ function randomCodabar() {
     return startChar + middlePart + stopChar;
 }
 
-function getDefaultValue(barcodeType) {
+async function getDefaultValue(barcodeType) {
     if (barcodeType === 'pharmacode') {
         return '12345';
     } else if (barcodeType === 'rationalizedCodabar') {
         return 'A1234567890B';
+    } else if (barcodeType === 'qrcode') {
+        const url = await getCurrentTabUrl();
+        return url;
     } else {
         return '123456789012';
     }
@@ -146,10 +149,11 @@ document.getElementById('download').addEventListener('click', downloadBarcode);
 document.getElementById('copy').addEventListener('click', copyToClipboard);
 
 // Handle barcode type change
-document.getElementById('barcodeType').addEventListener('change', (e) => {
+document.getElementById('barcodeType').addEventListener('change', async (e) => {
     const currentValue = document.getElementById('text').value;
-    if (!currentValue || currentValue === getDefaultValue(e.target.value)) {
-        document.getElementById('text').value = getDefaultValue(e.target.value);
+    const defaultValue = await getDefaultValue(e.target.value);
+    if (!currentValue || currentValue === defaultValue) {
+        document.getElementById('text').value = defaultValue;
     }
 });
 
@@ -161,7 +165,7 @@ document.getElementById('text').addEventListener('keypress', (e) => {
 });
 
 // Initialize with default value
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
     const barcodeType = document.getElementById('barcodeType').value;
-    document.getElementById('text').value = getDefaultValue(barcodeType);
+    document.getElementById('text').value = await getDefaultValue(barcodeType);
 });
