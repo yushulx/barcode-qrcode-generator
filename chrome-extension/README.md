@@ -4,6 +4,9 @@ Generate 1D and 2D barcodes instantly from any webpage URL or custom text.
 
 https://github.com/user-attachments/assets/8fc730b1-7ad8-4036-a96e-0c43ac37396f
 
+## Chrome Extension Installation
+[Barcode & QR Code Generator](https://chromewebstore.google.com/detail/barcode-qr-code-generator/akpmpbpgfofofmncgbkbhpobnfjomfkp)
+
 ## Features
 
 - **One-Click QR Codes**: Convert current page URL to QR code instantly
