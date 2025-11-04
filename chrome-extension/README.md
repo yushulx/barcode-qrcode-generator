@@ -2,6 +2,8 @@
 
 Generate 1D and 2D barcodes instantly from any webpage URL or custom text.
 
+https://github.com/user-attachments/assets/8fc730b1-7ad8-4036-a96e-0c43ac37396f
+
 ## Features
 
 - **One-Click QR Codes**: Convert current page URL to QR code instantly
@@ -52,7 +54,7 @@ Generate 1D and 2D barcodes instantly from any webpage URL or custom text.
 - **Library**: bwip-js v4.1.2 (included locally)
 - **Manifest**: Version 3
 - **Permissions**: activeTab only
-- **Size**: ~1 MB
+- **Size**: < 1MB
 - **Browser**: Chrome, Edge, Brave (Chromium-based)
 
 ## License
@@ -62,3 +64,6 @@ MIT License
 ## Credits
 
 Uses bwip-js library for barcode generation
+
+## Blog
+[How to Build a Chrome Extension for Barcode & QR Code Generation from Scratch](https://www.dynamsoft.com/codepool/chrome-extension-barcode-qr-code-generator.html)
